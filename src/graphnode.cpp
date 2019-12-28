@@ -11,16 +11,10 @@ GraphNode::~GraphNode()
     //// STUDENT CODE
     ////
 
-    _chatBot = nullptr;
-
-    // delete/reset all child edges
-    for (auto it = std::begin(_childEdges); it != std::end(_childEdges); ++it)
-    {
-        it->reset();
-    }
+    // delete/reset all child edges (no reset needed because smart pointer)
     _childEdges.clear();
 
-    // remove pointers to parent edges
+    // remove pointers to parent edges (no delete needed since weak)
     _parentEdges.clear();
 
     ////
@@ -44,10 +38,10 @@ void GraphNode::AddEdgeToChildNode(std::unique_ptr<GraphEdge> edge)
 
 //// STUDENT CODE
 ////
-void GraphNode::MoveChatbotHere(std::unique_ptr<ChatBot> chatbot)
+void GraphNode::MoveChatbotHere(ChatBot chatbot)
 {
     _chatBot = std::move(chatbot);
-    _chatBot->SetCurrentNode(this);
+    _chatBot.SetCurrentNode(this);
 }
 
 void GraphNode::MoveChatbotToNewNode(GraphNode *newNode)

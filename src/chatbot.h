@@ -12,10 +12,7 @@ class ChatBot
 {
 private:
     // data handles (owned)
-    // NOTE:: Since we want to own this resource we keep a shared_ptr on it.
-    // We are not using unique_ptr since in case of copying this class sharing the same _image is a good way to
-    // save resources, since we are not manipulating it.
-    std::shared_ptr<wxBitmap> _image; // avatar image
+    wxBitmap *_image; // avatar image
 
     // data handles (not owned)
     // NOTE: I keep these raw pointers since making them weak_ptr would just limit the reusability of this class.
@@ -36,9 +33,7 @@ public:
     //// STUDENT CODE
     ////
 
-    // I define that ChatBot is not copyable because ChatLogic is not
-    ChatBot(const ChatBot& other) = delete; // copy constructor
-
+    ChatBot(const ChatBot& other); // copy constructor
     ChatBot(ChatBot&& other) noexcept; // move constructor
     ChatBot &operator=(const ChatBot& other); // copy assigment
     ChatBot &operator=(ChatBot&& other) noexcept; // move assigment
@@ -50,7 +45,8 @@ public:
     void SetCurrentNode(GraphNode *node);
     void SetRootNode(GraphNode *rootNode) { _rootNode = rootNode; }
     void SetChatLogicHandle(ChatLogic *chatLogic) { _chatLogic = chatLogic; }
-    wxBitmap *GetImageHandle() { return _image.get(); }
+    wxBitmap *GetImageHandle() { return _image; }
+    ChatLogic* GetChatLogicHandle() { return _chatLogic; }
 
     // communication
     void ReceiveMessageFromUser(std::string message);
