@@ -11,39 +11,107 @@
 // constructor WITHOUT memory allocation
 ChatBot::ChatBot()
 {
-    // invalidate data handles
-    _image = nullptr;
-    _chatLogic = nullptr;
+    // invalidate raw handles
+    _currentNode = nullptr;
     _rootNode = nullptr;
+    _chatLogic = nullptr;
+
+    // invalidate smart pointers
+    _image = nullptr;
 }
 
 // constructor WITH memory allocation
 ChatBot::ChatBot(std::string filename)
 {
     std::cout << "ChatBot Constructor" << std::endl;
-    
-    // invalidate data handles
-    _chatLogic = nullptr;
+
+    // invalidate raw handles
+    _currentNode = nullptr;
     _rootNode = nullptr;
+    _chatLogic = nullptr;
 
     // load image into heap memory
-    _image = new wxBitmap(filename, wxBITMAP_TYPE_PNG);
+    _image = std::make_unique<wxBitmap>(filename, wxBITMAP_TYPE_PNG);
 }
 
 ChatBot::~ChatBot()
 {
     std::cout << "ChatBot Destructor" << std::endl;
 
-    // deallocate heap memory
-    if(_image != NULL) // Attention: wxWidgets used NULL and not nullptr
-    {
-        delete _image;
-        _image = NULL;
-    }
+    // We don't have to do anything here. Our raw pointers are weak and we are not handling lifetimes of these.
+    // Our smart pointer does deconstruct itself.
 }
 
 //// STUDENT CODE
 ////
+
+ChatBot::ChatBot(const ChatBot &other) {
+    std::cout << "ChatBot Copy Constructor" << std::endl;
+
+    // The copy constructor should copy all resources and keep both instances working.
+
+    // Pass smart pointer as shared_ptr
+    _image = other._image;
+
+    // Pass values of raw pointers
+    _currentNode = new GraphNode(*other._currentNode);
+    _rootNode = new GraphNode(*other._rootNode);
+    _chatLogic = new ChatLogic(*other._chatLogic);
+}
+
+
+ChatBot::ChatBot(ChatBot &&other) {
+    std::cout << "ChatBot Move Constructor" << std::endl;
+
+    // The move constructor just takes over all the other's pointers.
+    _image = other._image;
+    _currentNode = other._currentNode;
+    _rootNode = other._rootNode;
+    _chatLogic = other._chatLogic;
+
+    // And renders other unusable afterwards
+    other._image.reset();
+    other._currentNode = nullptr;
+    other._rootNode = nullptr;
+    other._chatLogic = nullptr;
+}
+
+ChatBot &ChatBot::operator=(const ChatBot &other) {
+    std::cout << "ChatBot Copy Assignment" << std::endl;
+    if (this == &other) {
+        return *this;
+    }
+
+    // The move constructor just takes over all the other's pointers.
+    _image = other._image;
+    _currentNode = other._currentNode;
+    _rootNode = other._rootNode;
+    _chatLogic = other._chatLogic;
+
+    return *this;
+}
+
+
+ChatBot &ChatBot::operator=(ChatBot &&other) {
+    std::cout << "ChatBot Move Assignment" << std::endl;
+    if (this == &other) {
+        return *this;
+    }
+
+    // The move constructor just takes over all the other's pointers.
+    _image = other._image;
+    _currentNode = other._currentNode;
+    _rootNode = other._rootNode;
+    _chatLogic = other._chatLogic;
+
+    // And renders other unusable afterwards
+    other._image.reset();
+    other._currentNode = nullptr;
+    other._rootNode = nullptr;
+    other._chatLogic = nullptr;
+
+    return *this;
+}
 
 ////
 //// EOF STUDENT CODE
