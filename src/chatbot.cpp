@@ -45,6 +45,8 @@ ChatBot::~ChatBot()
 //// STUDENT CODE
 ////
 
+// define that ChatBot is not copy-constructable in .h because ChatLogic is not
+/*
 ChatBot::ChatBot(const ChatBot &other) {
     std::cout << "ChatBot Copy Constructor" << std::endl;
 
@@ -58,9 +60,9 @@ ChatBot::ChatBot(const ChatBot &other) {
     _rootNode = new GraphNode(*other._rootNode);
     _chatLogic = new ChatLogic(*other._chatLogic);
 }
+*/
 
-
-ChatBot::ChatBot(ChatBot &&other) {
+ChatBot::ChatBot(ChatBot &&other) noexcept {
     std::cout << "ChatBot Move Constructor" << std::endl;
 
     // The move constructor just takes over all the other's pointers.
@@ -92,7 +94,7 @@ ChatBot &ChatBot::operator=(const ChatBot &other) {
 }
 
 
-ChatBot &ChatBot::operator=(ChatBot &&other) {
+ChatBot &ChatBot::operator=(ChatBot &&other) noexcept {
     std::cout << "ChatBot Move Assignment" << std::endl;
     if (this == &other) {
         return *this;

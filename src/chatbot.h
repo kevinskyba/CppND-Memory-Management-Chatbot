@@ -36,10 +36,12 @@ public:
     //// STUDENT CODE
     ////
 
+    // I define that ChatBot is not copyable because ChatLogic is not
     ChatBot(const ChatBot& other) = delete; // copy constructor
-    ChatBot(ChatBot&& other) = delete; // move constructor
-    ChatBot& operator=(const ChatBot& other); // copy assigment
-    ChatBot& operator=(ChatBot&& other); // move assigment
+
+    ChatBot(ChatBot&& other) noexcept; // move constructor
+    ChatBot &operator=(const ChatBot& other); // copy assigment
+    ChatBot &operator=(ChatBot&& other) noexcept; // move assigment
 
     ////
     //// EOF STUDENT CODE
