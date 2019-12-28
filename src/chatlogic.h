@@ -17,8 +17,8 @@ private:
     ////
 
     // data handles (owned)
-    std::vector<GraphNode *> _nodes;
-    std::vector<GraphEdge *> _edges;
+    std::vector<std::unique_ptr<GraphNode>> _nodes;
+    std::vector<GraphEdge*> _edges;
 
     ////
     //// EOF STUDENT CODE
@@ -39,6 +39,11 @@ public:
     // constructor / destructor
     ChatLogic();
     ~ChatLogic();
+
+    // Since we are having two vectors of unique_ptrs here we can't rely on the default copy constructors / assignments
+    // for compilation since these would try to copy our unique_ptr's.
+    ChatLogic(const ChatLogic& other) = delete; // copy constructor
+    ChatLogic& operator=(const ChatLogic& other) = delete; // copy assigment
 
     // getter / setter
     void SetPanelDialogHandle(ChatBotPanelDialog *panelDialog);

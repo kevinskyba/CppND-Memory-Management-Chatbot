@@ -36,8 +36,8 @@ public:
     //// STUDENT CODE
     ////
 
-    ChatBot(const ChatBot& other); // copy constructor
-    ChatBot(ChatBot&& other); // move constructor
+    ChatBot(const ChatBot& other) = delete; // copy constructor
+    ChatBot(ChatBot&& other) = delete; // move constructor
     ChatBot& operator=(const ChatBot& other); // copy assigment
     ChatBot& operator=(ChatBot&& other); // move assigment
 
