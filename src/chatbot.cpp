@@ -67,11 +67,13 @@ ChatBot::ChatBot(ChatBot &&other) noexcept {
     _currentNode = other._currentNode;
     _rootNode = other._rootNode;
     _chatLogic = other._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
 
     // And renders other unusable afterwards
     other._currentNode = nullptr;
     other._rootNode = nullptr;
     other._chatLogic = nullptr;
+    other._image = nullptr;
 }
 
 ChatBot &ChatBot::operator=(const ChatBot &other) {
@@ -83,6 +85,7 @@ ChatBot &ChatBot::operator=(const ChatBot &other) {
     // The move constructor just takes over all the other's pointers.
     _image = new wxBitmap();
     *_image = *other._image;
+
     _currentNode = other._currentNode;
     _rootNode = other._rootNode;
     _chatLogic = other._chatLogic;
@@ -108,6 +111,7 @@ ChatBot &ChatBot::operator=(ChatBot &&other) noexcept {
     other._currentNode = nullptr;
     other._rootNode = nullptr;
     other._chatLogic = nullptr;
+    other._image = nullptr;
 
     return *this;
 }

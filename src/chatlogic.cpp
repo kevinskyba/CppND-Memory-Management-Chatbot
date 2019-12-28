@@ -26,12 +26,6 @@ ChatLogic::~ChatLogic()
     //// STUDENT CODE
     ////
 
-    // delete/reset all nodes (no reset needed since smart pointers handle this automatically)
-    _nodes.clear();
-
-    // remove pointers to edges (weak pointers, so no delete needed)
-    _edges.clear();
-
     ////
     //// EOF STUDENT CODE
 }
@@ -146,17 +140,14 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
 
                             // create new edge
                             auto edge = std::make_unique<GraphEdge>(id);
-                            edge->SetChildNode(childNode->get());
-                            edge->SetParentNode(parentNode->get());
-
-                            auto pEdge = edge.get(); // we have to keep a raw pointer here for the call of AddAllTokensToElement next
-                            _edges.push_back(pEdge);
+                            edge->SetChildNode((*childNode).get());
+                            edge->SetParentNode((*parentNode).get());
 
                             // find all keywords for current node
-                            AddAllTokensToElement("KEYWORD", tokens, *pEdge);
+                            AddAllTokensToElement("KEYWORD", tokens, *edge);
 
                             // store reference in child node and parent node
-                            (*childNode)->AddEdgeToParentNode(pEdge);
+                            (*childNode)->AddEdgeToParentNode(edge.get());
                             (*parentNode)->AddEdgeToChildNode(std::move(edge));
                         }
 
